@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Kakkuu 💖</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Outfit:wght@300;400;600&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* --- THEME --- */
+        :root {
+            --bg-gradient: linear-gradient(180deg, #fff0f3 0%, #fff5f5 50%, #ffe5ec 100%);
+            --accent: #ff4d6d;
+            --text: #590d22;
+            --glass: rgba(255, 255, 255, 0.90);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- LOCK SCREEN --- */
+        #lock-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff0f3;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: transform 1s ease;
+        }
+
+        .lock-box {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(255, 77, 109, 0.15);
+            border: 1px solid #ffccd5;
+            width: 85%;
+            max-width: 400px;
+        }
+
+        .pass-input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px 0;
+            border: 2px solid #ffccd5;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            text-align: center;
+            outline: none;
+            color: var(--accent);
+        }
+        .pass-input::placeholder { color: #ffccd5; letter-spacing: 1px; font-size: 0.9rem; }
+
+        .unlock-btn {
+            background: var(--accent);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        /* --- FALLING PETALS --- */
+        .petal {
+            position: fixed;
+            top: -10vh;
+            background-color: #ff4d6d;
+            border-radius: 100% 0% 100% 0%;
+            z-index: 9999;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* --- BACKGROUND STICKERS (Couple Vibes) --- */
+        .sticker-bg {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.15;
+            z-index: 0;
+            animation: floatSticker 6s ease-in-out infinite;
+        }
+        @keyframes floatSticker { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        /* --- MAIN CONTENT --- */
+        #main-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+
+        /* --- SECTIONS --- */
+        section { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; position: relative; }
+        
+        h1, h2 { font-family: 'Dancing Script', cursive; color: #800f2f; }
+        p { font-size: 1.1rem; line-height: 1.6; color: #590d22; }
+
+        /* --- CLOUD GAME --- */
+        .cloud-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 30px; position: relative; z-index: 2; }
+        .cloud { 
+            background: #e0e0e0; 
+            color: #555; 
+            padding: 12px 25px; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        .cloud:active { transform: scale(0.9); }
+
+        /* --- GIFT BOX --- */
+        .gift-card {
+            background: var(--glass);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        /* --- PHOTO GALLERY --- */
+        .gallery-container { display: flex; overflow-x: auto; gap: 20px; padding: 30px 20px; width: 100%; max-width: 800px; scrollbar-width: none; }
+        .photo-polaroid { 
+            min-width: 260px; 
+            background: white; 
+            padding: 12px 12px 60px 12px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08); 
+            transform: rotate(-2deg); 
+            border-radius: 4px; 
+        }
+        .photo-polaroid:nth-child(even) { transform: rotate(2deg); }
+        .photo-polaroid img { width: 100%; height: 340px; object-fit: cover; border-radius: 2px; }
+        .caption { font-family: 'Dancing Script'; color: #555; font-size: 1.5rem; margin-top: 15px; }
+
+        /* --- FINAL CARD (Updated for Long Text) --- */
+        .final-card {
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 30px;
+            border: 2px solid var(--accent);
+            max-width: 600px; /* Wider for text */
+            box-shadow: 0 10px 40px rgba(255, 77, 109, 0.1);
+        }
+
+    </style>
+</head>
+<body>
+
+    <video id="bg-music" loop playsinline style="position:fixed; opacity:0; pointer-events:none; width:1px; height:1px;">
+        <source src="https://www.dropbox.com/scl/fi/tbq2ttv1qdxscrz17jbxo/Video-07-02-26-1-03-25-PM.mov?rlkey=np6nei7oxuokq5znd3uk3moxr&st=6q27n75b&raw=1" type="video/mp4">
+    </video>
+
+    <div id="lock-screen">
+        <div class="lock-box">
+            <div style="font-size: 4rem;">🔒</div>
+            <h2 style="font-size: 2.2rem; margin-top: 10px;">Locked for Kakkuu</h2>
+            
+            <input type="tel" id="passInput" class="pass-input" placeholder="Hint: My phone password..." maxlength="6">
+            
+            <button class="unlock-btn" onclick="checkPassword()">Unlock ❤️</button>
+            <p id="error-msg" style="color:red; margin-top:10px; display:none;">Oops! Wrong Password 😉</p>
+        </div>
+    </div>
+
+    <div id="main-content">
+        
+        <section>
+            <div class="sticker-bg" style="top: 10%; left: 5%;">🧸</div>
+            <div class="sticker-bg" style="top: 20%; right: 10%; animation-delay: 1s;">💑</div>
+            <div class="sticker-bg" style="bottom: 15%; left: 15%; animation-delay: 2s;">😽</div>
+            <div class="sticker-bg" style="bottom: 30%; right: 5%; animation-delay: 0.5s;">💌</div>
+
+            <h2 style="font-size: 2.5rem; color: var(--accent); position: relative; z-index: 2;">Wait... ✋</h2>
+            <p style="max-width: 350px; margin-top: 20px; font-weight: 300; font-size: 1.2rem; position: relative; z-index: 2;">
+                Mere bache pehla sari tension and off mood side kro and eh tuhade bugggu di side to ik chotu sa wish dekho...
+            </p>
+            <br>
+            <p style="font-weight: 600; color: #d62828; max-width: 350px; position: relative; z-index: 2;">
+                Pleaseeee mere bache don’t be sad myy loveeee everything will be alright 🥺😁❤️
+            </p>
+            
+            <div style="font-size: 2rem; margin-top: 40px; animation: bounce 2s infinite; position: relative; z-index: 2;">⬇️</div>
+            <p style="font-size: 0.9rem; opacity: 0.7; margin-top: 5px;">Scroll to see more myy kakku</p>
+        </section>
+
+        <section>
+            <h1 data-aos="fade-up">Let's Clear the Sky ☁️</h1>
+            <p>Tap the clouds to remove tension</p>
+            
+            <div class="cloud-container" id="clouds">
+                <div class="cloud" onclick="popCloud(this)">Tap to remove Tension ☁️</div>
+                <div class="cloud" onclick="popCloud(this)">Tap to remove Sadness ☁️</div>
+                <div class="cloud" onclick="popCloud(this)">Tap to remove Stress ☁️</div>
+                <div class="cloud" onclick="popCloud(this)">Tap to remove Overthinking ☁️</div>
+            </div>
+            
+            <div id="sun" style="display:none; font-size:6rem; margin-top:30px; animation:spin 10s linear infinite;">🌞</div>
+            
+            <div id="big-wish" style="display:none; margin-top: 30px;">
+                <h1 style="font-size: 3rem; color: #ff0a54; text-shadow: 0 0 10px rgba(255,10,84,0.3);">Happy Rose Day<br>Myy Loveee! 🌹</h1>
+                <p style="font-size: 1.2rem; margin-top: 20px; font-family: 'Outfit'; max-width: 90%; margin-left: auto; margin-right: auto;">
+                    Myy kakku you are the flower of my garden i lovee youuu soo much and forever i will myy sweetheart ❤️
+                </p>
+            </div>
+        </section>
+
+        <section>
+            <div class="gift-card" data-aos="zoom-in">
+                <h2>I have a gift for you...</h2>
+                <p>(Tap the box)</p>
+                <div style="font-size: 5rem; margin: 20px; cursor: pointer;" onclick="revealGift(this)">🎁</div>
+                
+                <div id="gift-content" style="display: none;">
+                    <h2 style="color: var(--accent);">Phool for myy fool ! 🥀</h2>
+                    <p style="font-size: 1rem; margin-top: 10px; color: #555;">(Hehe kidding... You are the most beautiful flower! 🌹)</p>
+                    <p style="font-weight: 600; margin-top: 10px; color: #d62828;">I lovee youu sooo much meri gulabo🌹</p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 data-aos="fade-right">My Happy Place 💖</h2>
+            <div class="gallery-container" data-aos="fade-left" data-aos-duration="3000">
+                <div class="photo-polaroid">
+                    <img src="https://www.dropbox.com/scl/fi/p8ceujxyqi4e717jch070/Photo-07-02-26-1-18-38-PM.jpg?rlkey=wr5whiaat09aoyd2luqhsxqnc&st=dqjo808p&raw=1">
+                    <div class="caption">My World 🌎</div>
+                </div>
+                <div class="photo-polaroid">
+                    <img src="https://www.dropbox.com/scl/fi/swjycxbvjflyey8aa4uht/Photo-07-02-26-1-18-38-PM-3.jpg?rlkey=o08z9h54gh0u0q2lrd920tp0t&st=yc82maxv&raw=1">
+                    <div class="caption">Cuties 😽</div>
+                </div>
+                <div class="photo-polaroid">
+                    <img src="https://www.dropbox.com/scl/fi/s6fyz3avecp7sllww6j06/Photo-07-02-26-1-18-38-PM-2.jpg?rlkey=0tyhgihk2f32k1xngjalsw6wh&st=dmm6b8ur&raw=1">
+                    <div class="caption">Pure Love ❤️</div>
+                </div>
+                <div class="photo-polaroid">
+                    <img src="https://www.dropbox.com/scl/fi/p1yvigrh82fawhvfmfiwn/Photo-07-02-26-1-18-38-PM-1.jpg?rlkey=wpao1jqbwgnzo6cwmlo3n16r7&st=fq45gi9f&raw=1">
+                    <div class="caption">Forever ♾️</div>
+                </div>
+                <div class="photo-polaroid">
+                    <img src="https://www.dropbox.com/scl/fi/n9bp17jcblfegtx1ywck3/Photo-07-02-26-1-18-38-PM-1-1.jpg?rlkey=isozllh38xxyd6ggwu2nspmn6&st=4jpascas&raw=1">
+                    <div class="caption">My Kakkuu 🧿</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="final-card" data-aos="zoom-in" data-aos-duration="2000">
+                <h2 style="font-size: 2rem; margin-bottom: 20px;">Dil se suno mere bache...</h2>
+                
+                <p style="text-align: left; font-size: 1.1rem; color: #333; line-height: 1.8; font-weight: 300;">
+                    Myy kakkuu now keep aside all the negative things and tensions, 
+                    just smile for a while myy loveee... everything will be fine smjhe mere kakkee 
+                    🫂😁😚💖🧿❤️💗
+                    <br><br>
+                    Mere sohne babyy dekho sab acha hoga and sab thik hoga mere bache don’t overthink 
+                    and don’t be sad my darling 🥺😁❤️🫂💗😚💖🧿
+                    <br><br>
+                    Myy lovee , myy sweetheart , my babyy , mere sohne kakkee , myy pookiee 🎀 , 
+                    my honey piee , my wifeyy wishing you happy rose day my loveee mood off na rkho 
+                    mere bache sab acha hoga myy baby girl now smile my kakke !
+                    🫂🥹😁❤️💗💖🧿😚
+                    <br><br>
+                    Negative ni sochna mere bache and overthinking ni krni mere babyy dekho 
+                    obviously kuch na kuch solution ayega hi is situation ka my lovee dekhna 
+                    everything will be fine my sweetheart.
+                    <br><br>
+                    <b>I loveee youuu soooo much my dear sweet baby 😁🫂😚🧿💖❤️✨💗</b>
+                </p>
+                
+                <p style="font-size: 0.9rem; margin-top: 30px; opacity: 0.6;">Tera Gagan ❤️</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        AOS.init({ duration: 1000 });
+
+        // --- PASSWORD LOGIC (UPDATED) ---
+        function checkPassword() {
+            var input = document.getElementById('passInput').value;
+            // Updated Password to 012920
+            if (input === "012920") {
+                document.getElementById('lock-screen').style.transform = "translateY(-100vh)";
+                document.getElementById('main-content').style.display = "block";
+                setTimeout(() => {
+                    document.getElementById('main-content').style.opacity = "1";
+                    startPetals();
+                }, 500);
+                var vid = document.getElementById("bg-music");
+                vid.muted = false;
+                vid.play().catch(e => console.log(e));
+            } else {
+                var err = document.getElementById('error-msg');
+                err.style.display = "block";
+                var box = document.querySelector('.lock-box');
+                box.style.transform = "translateX(10px)";
+                setTimeout(() => { box.style.transform = "translateX(0)"; }, 100);
+            }
+        }
+
+        // --- GIFT REVEAL ---
+        function revealGift(el) {
+            el.style.display = 'none';
+            document.getElementById('gift-content').style.display = 'block';
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+
+        // --- PETAL SHOWER ---
+        function startPetals() {
+            setInterval(() => {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                petal.style.left = Math.random() * 100 + "vw";
+                petal.style.width = Math.random() * 15 + 10 + "px";
+                petal.style.height = petal.style.width;
+                petal.style.backgroundColor = Math.random() > 0.5 ? '#ff4d6d' : '#ffccd5';
+                petal.style.animationDuration = Math.random() * 3 + 3 + "s";
+                document.body.appendChild(petal);
+                setTimeout(() => { petal.remove(); }, 6000);
+            }, 150);
+        }
+
+        // --- CLOUD GAME + ROSE DAY WISH ---
+        let cloudsPopped = 0;
+        function popCloud(el) {
+            el.style.transform = "scale(0)";
+            setTimeout(() => { el.style.display = 'none'; }, 300);
+            cloudsPopped++;
+            if (cloudsPopped === 4) {
+                document.getElementById('sun').style.display = 'block';
+                document.getElementById('clouds').style.display = 'none';
+                
+                // Show Big Wish
+                document.getElementById('big-wish').style.display = 'block';
+                document.getElementById('big-wish').style.animation = 'pulse 1s';
+                
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+    </script>
+</body>
+</html>
